@@ -1,5 +1,7 @@
+"use client";
+import ErrorPage from "./error";
+
 export default function Home() {
-  return (
-    <>Hello</>
-  );
+  const hello = true;
+  return hello ? "Hello" : <ErrorPage />;
 }
