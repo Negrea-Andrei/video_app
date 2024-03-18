@@ -1,8 +1,7 @@
 "use client";
-
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
-import { useStreamVideoClient } from "@stream-io/video-react-sdk";
+import { useStreamVideoClient, Call } from "@stream-io/video-react-sdk";
 import { Loader2 } from "lucide-react";
 import React from "react";
 
@@ -14,7 +13,30 @@ export default function CreateMeeting() {
   const [participantsInput, setParticipantsInput] = useState("");
   const client = useStreamVideoClient();
 
+  const [call, setCall] = useState(null);
+
   const { user } = useUser();
+
+  async function createMeeting() {
+    if (!client || !user) {
+      return;
+    }
+    try {
+      console.log("Is ok");
+      const id = crypto.randomUUID();
+
+      const call = client.call("default", id);
+
+      await call.getOrCreate({
+        data: {
+          custom: { description: descriptionValue },
+        },
+      });
+      setCall(call);
+    } catch (error) {
+      alert("Something went wrong! Please try again later!");
+    }
+  }
 
   if (!client || !user) {
     return <Loader2 className="mx-auto animate-spin" />;
@@ -23,7 +45,7 @@ export default function CreateMeeting() {
   return (
     <div className="flex flex-col items-center space-y-6">
       <h1 className="text-center text-2xl font-bold">
-        Welcome {user?.username}
+        Welcome {user && user.username}
       </h1>
       <div className="mx-auto w-80 space-y-6 rounded-md bg-slate-100 p-5">
         <h2 className="text-xl font-bold">Create a new meeting</h2>
@@ -36,7 +58,11 @@ export default function CreateMeeting() {
           value={participantsInput}
           onChange={setParticipantsInput}
         />
+        <button onClick={createMeeting} className="w-full">
+          Create meeting
+        </button>
       </div>
+      {call && <MeetingLink call={call} />}
     </div>
   );
 }
@@ -162,4 +188,10 @@ function Participants({ value, onChange }) {
       )}
     </div>
   );
+}
+
+function MeetingLink({ call }) {
+  const meetingLink = `localhost:3000/meeting/${call.id}`;
+
+  return <div className="text-center">{meetingLink}</div>;
 }

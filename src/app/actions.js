@@ -11,8 +11,6 @@ export async function getToken() {
         throw new Error("ALI key not set")
     }
     const user = await currentUser();
-
-    console.log(user?.id)
     if (!user) {
         throw new Error("User not logged in")
     }
@@ -23,7 +21,6 @@ export async function getToken() {
 
     const addedTokenTime = Math.floor(Date.now() / 1000) - 60
 
-    const token = streamClient.createToken(user.id, expTokenTime, addedTokenTime)
-
-    console.log(`Token ${token} added`)
+    const token = streamClient.createToken(user.id, expTokenTime, addedTokenTime);
+    return token
 }
