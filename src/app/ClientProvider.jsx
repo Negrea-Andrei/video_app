@@ -1,10 +1,6 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
-import {
-  StreamVideo,
-  StreamVideoClient,
-  User,
-} from "@stream-io/video-react-sdk";
+import { StreamVideo, StreamVideoClient } from "@stream-io/video-react-sdk";
 import { Loader2 } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";

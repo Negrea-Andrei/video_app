@@ -1,7 +1,5 @@
-"use client";
-import ErrorPage from "./error";
+import CreateMeeting from "./CreateMeeting";
 
 export default function Home() {
-  const hello = true;
-  return hello ? "Hello" : <ErrorPage />;
+  return <CreateMeeting />;
 }
