@@ -11,6 +11,7 @@ export default function CreateMeeting() {
     "Please add your description here!",
   );
   const [startTimeInput, setStartTimeInput] = useState("");
+  const [participantsInput, setParticipantsInput] = useState("");
   const client = useStreamVideoClient();
 
   const { user } = useUser();
@@ -31,6 +32,10 @@ export default function CreateMeeting() {
           onChange={setDescriptionValue}
         />
         <StartTimeInput value={startTimeInput} onChange={setStartTimeInput} />
+        <Participants
+          value={participantsInput}
+          onChange={setParticipantsInput}
+        />
       </div>
     </div>
   );
@@ -108,6 +113,49 @@ function StartTimeInput({ value, onChange }) {
             value={value}
             onChange={(e) => onChange(e.target.value)}
             min={dateTimeLocal}
+            className="w-full rounded-md border border-gray-300 p-2"
+          />
+        </label>
+      )}
+    </div>
+  );
+}
+
+function Participants({ value, onChange }) {
+  const [active, setActive] = useState(false);
+
+  return (
+    <div className="space-y-2">
+      <div className="font-medium">Invite </div>
+      <label className="flex items-center gap-1.5">
+        <input
+          type="radio"
+          checked={!active}
+          onChange={() => {
+            setActive(false);
+            onChange("");
+          }}
+        />
+        Everyone with link can join
+      </label>
+      <label className="flex items-center gap-1.5">
+        <input
+          type="radio"
+          checked={active}
+          onChange={() => {
+            setActive(true);
+            onChange("");
+          }}
+        />
+        Private meeting
+      </label>
+      {active && (
+        <label className="block space-y-1">
+          <span className="font-medium">Participant emails</span>
+          <textarea
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="Enter participant email addresses separated by commas"
             className="w-full rounded-md border border-gray-300 p-2"
           />
         </label>
