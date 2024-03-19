@@ -1,4 +1,3 @@
-import { Metadata } from "next";
 import MeetingPage from "./MeetingPage";
 
 export function generateMetadata({ id }) {
