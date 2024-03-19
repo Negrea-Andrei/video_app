@@ -1,7 +1,7 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
-export default function Navbar() {
+export default function NavBar() {
   return (
     <header className="shadow">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between p-3 font-medium">
