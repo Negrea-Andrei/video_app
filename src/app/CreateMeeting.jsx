@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useStreamVideoClient, Call } from "@stream-io/video-react-sdk";
 import { Loader2 } from "lucide-react";
 import React from "react";
+import { getUserID } from "./actions";
 
 export default function CreateMeeting() {
   const [descriptionValue, setDescriptionValue] = useState(
@@ -22,13 +23,30 @@ export default function CreateMeeting() {
       return;
     }
     try {
+      const callType = participantsInput ? "private" : "default";
       console.log("Is ok");
       const id = crypto.randomUUID();
 
-      const call = client.call("default", id);
+      const call = client.call(callType, id);
+
+      const membersEmails = participantsInput
+        .split(",")
+        .map((email) => email.trim());
+
+      const membersID = await getUserID(membersEmails);
+
+      const members = membersID
+        .map((id) => ({ user_id: id, role: "call_member" }))
+        .concat({ user_id: user.id, role: "call_member" })
+        .filter(
+          (value, index, array) =>
+            array.findIndex((value2) => value2.user_id === value.user_id) ===
+            index,
+        );
 
       await call.getOrCreate({
         data: {
+          members,
           custom: { description: descriptionValue },
         },
       });
