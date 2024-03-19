@@ -36,9 +36,8 @@ export default function MeetingPage({ id }) {
   return (
     <StreamCall call={call}>
       <StreamTheme className="space-y-3">
-        <SpeakerLayout>
-          <CallControls />
-        </SpeakerLayout>
+        <SpeakerLayout />
+        <CallControls />
       </StreamTheme>
     </StreamCall>
   );
