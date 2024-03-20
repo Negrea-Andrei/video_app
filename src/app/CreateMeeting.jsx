@@ -49,6 +49,8 @@ export default function CreateMeeting() {
             index,
         ); //! Construct members array for the call
 
+      const start_meeting_time = "";
+
       await call.getOrCreate({
         data: {
           members,
