@@ -3,7 +3,7 @@
 import { useUser } from "@clerk/nextjs"; //! Clerk for user authentication
 import { useState } from "react"; //! React hooks
 import { useStreamVideoClient, Call } from "@stream-io/video-react-sdk"; //! Stream Video SDK
-import { Loader2 } from "lucide-react"; //! Loader component
+import { Copy, Loader2 } from "lucide-react"; //! Loader component
 import React from "react"; //! React library
 import { getUserID } from "./actions"; //! Function to get user ID
 
@@ -236,7 +236,32 @@ function Participants({ value, onChange }) {
 }
 
 function MeetingLink({ call }) {
-  const meetingLink = `localhost:3000/meeting/${call.id}`; // Constructing meeting link
+  const meetingLink = `http://localhost:3000//meeting/${call.id}`; // Constructing meeting link using a relative path
 
-  return <div className="text-center">{meetingLink}</div>; // Rendering meeting link
+  return (
+    <div className="flex flex-col items-center gap-3 text-center">
+      <div className="flex items-center gap-3">
+        <span>
+          Invitation link:{" "}
+          <a
+            className="font-medium"
+            href={meetingLink}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {meetingLink}
+          </a>
+        </span>
+        <button
+          title="Copy invitation link"
+          onClick={() => {
+            navigator.clipboard.writeText(meetingLink);
+            alert("Copied to clipboard");
+          }}
+        >
+          <Copy />
+        </button>
+      </div>
+    </div>
+  );
 }
