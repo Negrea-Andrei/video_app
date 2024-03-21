@@ -49,7 +49,7 @@ export default function CreateMeeting() {
             index,
         ); //! Construct members array for the call
 
-      const start_meeting_time = "";
+      const start_meeting_time = new Date(startTimeInput || Date.now()).toISOString();
 
       await call.getOrCreate({
         data: {
