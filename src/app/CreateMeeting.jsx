@@ -55,18 +55,20 @@ export default function CreateMeeting() {
             index,
         );
 
-      const start_meeting_time = new Date(
-        startTimeInput || Date.now(),
-      ).toISOString();
+      const startTime = new Date(startTimeInput || Date.now());
+      console.log(startTime);
 
       // Create or get the call with specified data
       await call.getOrCreate({
         data: {
+          //! FIX THE START TIME NOT SHOWING
+          startTime,
           members,
           custom: { description: descriptionValue },
         },
       });
       setCall(call); //* Set the created call
+      console.log(call.startTime);
     } catch (error) {
       alert("Something went wrong! Please try again later!");
     }
@@ -262,6 +264,38 @@ function MeetingLink({ call }) {
           <Copy />
         </button>
       </div>
+      <a
+        href={getMailToLink(
+          meetingLink,
+          call.state.startTime,
+          call.state.custom.description,
+        )}
+        target="_blank"
+        className="text-blue-500 hover:underline"
+      >
+        Send email invitation
+      </a>
     </div>
   );
+}
+
+function getMailToLink(meetingLink, startsAt, description) {
+  const startDateFormatted = startsAt
+    ? startsAt.toLocaleString("en-US", {
+        dateStyle: "full",
+        timeStyle: "short",
+      })
+    : undefined;
+
+  const subject =
+    "Join my meeting" + (startDateFormatted ? ` at ${startDateFormatted}` : "");
+
+  const body =
+    `Join my meeting at ${meetingLink}.` +
+    (startDateFormatted
+      ? `\n\nThe meeting starts at ${startDateFormatted}.`
+      : "") +
+    (description ? `\n\nDescription: ${description}` : "");
+
+  return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
