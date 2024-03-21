@@ -1,45 +1,51 @@
 "use client";
 // Importing necessary modules and components
-import { useUser } from "@clerk/nextjs"; //! Importing useUser hook for user authentication
-import { useState } from "react"; //! Importing useState hook from React
-import { useStreamVideoClient, Call } from "@stream-io/video-react-sdk"; //! Importing necessary functions and components from Stream Video SDK
-import { Loader2 } from "lucide-react"; //! Importing Loader2 component from lucide-react
-import React from "react"; //! Importing React library
-import { getUserID } from "./actions"; //! Importing function to get user ID
+import { useUser } from "@clerk/nextjs"; //! Clerk for user authentication
+import { useState } from "react"; //! React hooks
+import { useStreamVideoClient, Call } from "@stream-io/video-react-sdk"; //! Stream Video SDK
+import { Loader2 } from "lucide-react"; //! Loader component
+import React from "react"; //! React library
+import { getUserID } from "./actions"; //! Function to get user ID
 
 // Main component for creating a meeting
 export default function CreateMeeting() {
-  //? States for managing input values and client connection
+  // States for managing input values and client connection
   const [descriptionValue, setDescriptionValue] = useState(
     "Please add your description here!",
-  ); // State for description input value
-  const [startTimeInput, setStartTimeInput] = useState(""); //* State for start time input value
-  const [participantsInput, setParticipantsInput] = useState(""); //* State for participants input value
-  const client = useStreamVideoClient(); //* Stream Video client instance
+  ); //* Default description value
+  const [startTimeInput, setStartTimeInput] = useState(""); //* Default start time input
+  const [participantsInput, setParticipantsInput] = useState(""); //* Default participants input
+  const client = useStreamVideoClient(); //! Client for video streaming
 
-  const [call, setCall] = useState(null); //* State for call object
+  const [call, setCall] = useState(null); //* Initialize call object state
 
-  const { user } = useUser(); //* Current user object
+  const { user } = useUser(); //! Get current user
 
-  //! Function to create a meeting
+  // Function to create a meeting
   async function createMeeting() {
     if (!client || !user) {
-      //* Check if client or user is available
+      //! Check if client or user is unavailable
       return;
     }
     try {
       const callType = participantsInput ? "private" : "default"; //* Determine call type
       console.log("Is ok");
-      const id = crypto.randomUUID(); //* Generate unique ID for the call
 
-      const call = client.call(callType, id); //* Create call object
+      // Generate unique ID for the call
+      const id = crypto.randomUUID();
 
+      // Initialize call object
+      const call = client.call(callType, id);
+
+      // Extract email addresses of participants
       const membersEmails = participantsInput
         .split(",")
-        .map((email) => email.trim()); //* Extract email addresses of participants
+        .map((email) => email.trim());
 
-      const membersID = await getUserID(membersEmails); //* Retrieve user IDs corresponding to email addresses
+      // Retrieve user IDs corresponding to email addresses
+      const membersID = await getUserID(membersEmails);
 
+      // Construct members array for the call
       const members = membersID
         .map((id) => ({ user_id: id, role: "call_member" }))
         .concat({ user_id: user.id, role: "call_member" })
@@ -47,25 +53,28 @@ export default function CreateMeeting() {
           (value, index, array) =>
             array.findIndex((value2) => value2.user_id === value.user_id) ===
             index,
-        ); //! Construct members array for the call
+        );
 
-      const start_meeting_time = new Date(startTimeInput || Date.now()).toISOString();
+      const start_meeting_time = new Date(
+        startTimeInput || Date.now(),
+      ).toISOString();
 
+      // Create or get the call with specified data
       await call.getOrCreate({
         data: {
           members,
           custom: { description: descriptionValue },
         },
-      }); //! Create or get the call with specified data
-      setCall(call); //* Set the call object
+      });
+      setCall(call); //* Set the created call
     } catch (error) {
-      alert("Something went wrong! Please try again later!"); // Show alert if an error occurs
+      alert("Something went wrong! Please try again later!");
     }
   }
 
+  // Display loader if client or user is unavailable
   if (!client || !user) {
-    // Check if client or user is unavailable
-    return <Loader2 className="mx-auto animate-spin" />; // Show loader
+    return <Loader2 className="mx-auto animate-spin" />;
   }
 
   // Render the meeting creation form
@@ -75,7 +84,9 @@ export default function CreateMeeting() {
         Welcome {user && user.username}
       </h1>
       <div className="mx-auto w-80 space-y-6 rounded-md bg-slate-100 p-5">
-        <h2 className="text-xl font-bold">Create a new meeting</h2>
+        <h2 className="flex w-full justify-center font-bold">
+          Create a new meeting
+        </h2>
         <DescribeInputs
           value={descriptionValue}
           onChange={setDescriptionValue}
@@ -85,7 +96,10 @@ export default function CreateMeeting() {
           value={participantsInput}
           onChange={setParticipantsInput}
         />
-        <button onClick={createMeeting} className="w-full">
+        <button
+          onClick={createMeeting}
+          className="flex w-full items-center justify-center gap-2 rounded-full bg-blue-500 px-3 py-2 font-semibold text-white transition-colors hover:bg-blue-600 active:bg-blue-600 disabled:bg-gray-200"
+        >
           Create meeting
         </button>
       </div>
@@ -96,7 +110,7 @@ export default function CreateMeeting() {
 
 // Component for describing meeting details
 function DescribeInputs({ value, onChange }) {
-  const [active, setActive] = useState(false); // State for managing input activation
+  const [active, setActive] = useState(false); //* State for managing input activation
 
   return (
     <div className="space-y-2">
@@ -129,12 +143,13 @@ function DescribeInputs({ value, onChange }) {
 
 // Component for setting meeting start time
 function StartTimeInput({ value, onChange }) {
-  const [active, setActive] = useState(false); // State for managing input activation
+  const [active, setActive] = useState(false); //* State for managing input activation
   const dateTimeLocal = new Date(
     new Date().getTime() - new Date().getTimezoneOffset() * 60000,
   )
     .toISOString()
     .slice(0, 16);
+
   return (
     <div className="space-y-2">
       <div className="font-medium">Meeting start:</div>
@@ -178,7 +193,7 @@ function StartTimeInput({ value, onChange }) {
 
 // Component for specifying meeting participants
 function Participants({ value, onChange }) {
-  const [active, setActive] = useState(false); // State for managing input activation
+  const [active, setActive] = useState(false); //* State for managing input activation
 
   return (
     <div className="space-y-2">
@@ -220,7 +235,6 @@ function Participants({ value, onChange }) {
   );
 }
 
-// Component for displaying meeting link
 function MeetingLink({ call }) {
   const meetingLink = `localhost:3000/meeting/${call.id}`; // Constructing meeting link
 

@@ -23,7 +23,7 @@ export default function MeetingPage({ id }) {
     return (
       <button
         onClick={async () => {
-          const call = client.call("default", id);
+          const call = client.call("private", id);
           await call.join();
           setCall(call);
         }}
