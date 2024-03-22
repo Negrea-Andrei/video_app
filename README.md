@@ -20,6 +20,19 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Technologies Used
+
+This project utilizes the following technologies:
+
+- **Next.js:** Next.js is a React framework for building server-side rendered and statically generated web applications.
+- **Clerk:** Clerk is used for authentication in this project. It provides user authentication and management functionalities.
+- **Stream:** Stream is used for video calls in this project. It offers APIs and SDKs for building real-time chat and video applications.
+- **Tailwind CSS:** Tailwind CSS is a utility-first CSS framework that is used for styling in this project. It provides a set of pre-built components and utilities for rapid UI development.
+- **next/font:** The `next/font` package is used to automatically optimize and load Inter, a custom Google Font, in this project.
+
+These technologies work together to provide a robust and feature-rich web application experience.
+
+
 ## Authentification with Clerk
 
 Clerk is used for authentication in this project. Learn more about Clerk from their [official website](https://clerk.dev/).
