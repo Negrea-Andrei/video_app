@@ -28,6 +28,29 @@ Clerk is used for authentication in this project. Learn more about Clerk from th
 
 Stream is used for video calls in this project. Learn more about Stream from their [official website](https://getstream.io/).
 
+## Features
+
+### Video Recording
+- Record video calls for future reference or sharing with participants.
+- Access recorded videos through the platform for playback or download.
+
+### Planning Meetings for Later Time
+- Schedule meetings for future dates and times.
+- Set reminders or notifications for participants about upcoming meetings.
+
+### Sending Emails about the Meeting
+- Automatically send email invitations to participants with meeting details and instructions.
+- Send reminders or updates via email before the meeting starts.
+
+### Allowing to Join as Guest
+- Enable guests to join meetings without requiring them to create an account.
+- Provide a seamless experience for guests to participate in meetings with minimal friction.
+
+### Creating Private Meetings or Public Ones
+- Create private meetings with restricted access for selected participants.
+- Host public meetings that are open for anyone to join without restrictions.
+- Set permissions and access controls for different types of meetings.
+
 ## Tailwind CSS
 
 This project uses Tailwind CSS for styling. Learn more about Tailwind CSS from their [official documentation](https://tailwindcss.com/).
