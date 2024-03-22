@@ -61,7 +61,6 @@ export default function CreateMeeting() {
       // Create or get the call with specified data
       await call.getOrCreate({
         data: {
-          //! FIX THE START TIME NOT SHOWING
           starts_at: startTime,
           members,
           custom: { description: descriptionValue },
