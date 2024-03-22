@@ -237,7 +237,7 @@ function Participants({ value, onChange }) {
 }
 
 function MeetingLink({ call }) {
-  const meetingLink = `http://localhost:3000//meeting/${call.id}`; // Constructing meeting link using a relative path
+  const meetingLink = `http://localhost:3000/meeting/${call.id}`; // Constructing meeting link using a relative path
 
   return (
     <div className="flex flex-col items-center gap-3 text-center">
