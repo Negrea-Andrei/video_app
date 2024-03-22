@@ -20,6 +20,18 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Authentification with Clerk
+
+Clerk is used for authentication in this project. Learn more about Clerk from their [official website](https://clerk.dev/).
+
+## Video Calls with Stream
+
+Stream is used for video calls in this project. Learn more about Stream from their [official website](https://getstream.io/).
+
+## Tailwind CSS
+
+This project uses Tailwind CSS for styling. Learn more about Tailwind CSS from their [official documentation](https://tailwindcss.com/).
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
@@ -34,3 +46,4 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
