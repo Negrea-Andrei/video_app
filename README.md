@@ -28,6 +28,21 @@ Clerk is used for authentication in this project. Learn more about Clerk from th
 
 Stream is used for video calls in this project. Learn more about Stream from their [official website](https://getstream.io/).
 
+## Demo Authentication
+
+To access the demo features of this application, you can use the following demo accounts:
+
+### Account 1
+- **Username:** fortest1
+- **Password:** 1fortest!
+
+### Account 2
+- **Username:** fortest2
+- **Password:** 2fortest!
+
+These demo accounts allow you to experience the application's features without the need to create your own account. Please note that these accounts are for demonstration purposes only and should not be used for sensitive or personal information.
+
+
 ## Features
 
 ### Video Recording
@@ -36,11 +51,9 @@ Stream is used for video calls in this project. Learn more about Stream from the
 
 ### Planning Meetings for Later Time
 - Schedule meetings for future dates and times.
-- Set reminders or notifications for participants about upcoming meetings.
 
 ### Sending Emails about the Meeting
-- Automatically send email invitations to participants with meeting details and instructions.
-- Send reminders or updates via email before the meeting starts.
+- Send email invitations to participants with meeting details and instructions.
 
 ### Allowing to Join as Guest
 - Enable guests to join meetings without requiring them to create an account.
