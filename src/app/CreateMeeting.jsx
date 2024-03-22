@@ -62,7 +62,7 @@ export default function CreateMeeting() {
       await call.getOrCreate({
         data: {
           //! FIX THE START TIME NOT SHOWING
-          startTime,
+          starts_at: startTime,
           members,
           custom: { description: descriptionValue },
         },
