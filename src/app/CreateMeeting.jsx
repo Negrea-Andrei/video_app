@@ -267,7 +267,7 @@ function MeetingLink({ call }) {
       <a
         href={getMailToLink(
           meetingLink,
-          call.state.startTime,
+          call.state.startsAt,
           call.state.custom.description,
         )}
         target="_blank"
