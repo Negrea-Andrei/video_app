@@ -17,6 +17,7 @@ import useStreamCall from "../../hooks/useStreamCall";
 import PermissionPrompt from "../../../components/PermissionPrompt";
 import AudioVolumeIndicator from "../../../components/AudioVolumeIndicator";
 import FlexibleCallLayout from "../../../components/FlexibleCallLayout";
+import RecordingsMeetings from "../../../components/RecordingsMeetings";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 
@@ -65,14 +66,19 @@ function MeetingScreen() {
 
   const [setupComplete, setSetupComplete] = useState(false);
 
-  async function handleSetupComplete() {
-    call.join();
-    setSetupComplete(true);
-  }
-
   const callIsInFuture = callStartsAt && new Date(callStartsAt) > new Date();
 
   const callHasEnded = !!callEndedAt;
+
+  async function handleSetupComplete() {
+    if (!callIsInFuture) {
+      call.join();
+      setSetupComplete(true);
+    } else {
+      // Optionally, display a message indicating that the call is in the future
+      alert("You cannot join the call as it is scheduled for the future.");
+    }
+  }
 
   if (callHasEnded) {
     return <MeetingEndedScreen />;
@@ -185,6 +191,24 @@ function UpcomingMeetingScreen() {
       >
         Go home
       </a>
+    </div>
+  );
+}
+
+function MeetingEndedScreen() {
+  return (
+    <div className="flex flex-col items-center gap-6">
+      <p className="font-bold">This meeting has ended</p>
+      <a
+        href="/"
+        className="flex items-center justify-center gap-2 rounded-full bg-blue-500 px-3 py-2 font-semibold text-white transition-colors hover:bg-blue-600 active:bg-blue-600 disabled:bg-gray-200"
+      >
+        Go home
+      </a>
+      <div className="space-y-3">
+        <h2 className="text-center text-xl font-bold">Recordings</h2>
+        <RecordingsMeetings />
+      </div>
     </div>
   );
 }
