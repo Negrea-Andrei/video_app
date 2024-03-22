@@ -3,16 +3,22 @@
 import { useUser } from "@clerk/nextjs";
 import {
   CallControls,
+  CallingState,
   SpeakerLayout,
   StreamCall,
+  DeviceSettings,
   StreamTheme,
+  VideoPreview,
   useCallStateHooks,
   useStreamVideoClient,
 } from "@stream-io/video-react-sdk";
 import useLoadCall from "../../hooks/useLoadCall";
 import useStreamCall from "../../hooks/useStreamCall";
+import PermissionPrompt from "../../../components/PermissionPrompt";
+import AudioVolumeIndicator from "../../../components/AudioVolumeIndicator";
+import FlexibleCallLayout from "../../../components/FlexibleCallLayout";
+import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
 
 export default function MeetingPage({ id }) {
   const { user, isLoaded: userLoaded } = useUser();
@@ -51,10 +57,11 @@ export default function MeetingPage({ id }) {
 }
 
 function MeetingScreen() {
+  const call = useStreamCall();
   const { useCallEndedAt, useCallStartedAt } = useCallStateHooks();
 
   const callEndedAt = useCallEndedAt();
-  const callStartsAt = useCallStartsAt();
+  const callStartsAt = useCallStartedAt();
 
   const [setupComplete, setSetupComplete] = useState(false);
 
@@ -93,6 +100,68 @@ function MeetingScreen() {
   );
 }
 
+function SetupUI({ onSetupComplete }) {
+  const call = useStreamCall();
+
+  const { useMicrophoneState, useCameraState } = useCallStateHooks();
+
+  const micState = useMicrophoneState();
+  const camState = useCameraState();
+
+  const [micCamDisabled, setMicCamDisabled] = useState(false);
+
+  useEffect(() => {
+    if (micCamDisabled) {
+      call.camera.disable();
+      call.microphone.disable();
+    } else {
+      call.camera.enable();
+      call.microphone.enable();
+    }
+  }, [micCamDisabled, call]);
+
+  if (!micState.hasBrowserPermission || !camState.hasBrowserPermission) {
+    return <PermissionPrompt />;
+  }
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <h1 className="text-center text-2xl font-bold">Setup</h1>
+      <VideoPreview />
+      <div className="flex h-16 items-center gap-3">
+        <AudioVolumeIndicator />
+        <DeviceSettings />
+      </div>
+      <label className="flex items-center gap-2 font-medium">
+        <input
+          type="checkbox"
+          checked={micCamDisabled}
+          onChange={(e) => setMicCamDisabled(e.target.checked)}
+        />
+        Join with mic and camera off
+      </label>
+      <button
+        className="flex items-center justify-center gap-2 rounded-full bg-blue-500 px-3 py-2 font-semibold text-white transition-colors hover:bg-blue-600 active:bg-blue-600 disabled:bg-gray-200"
+        onClick={onSetupComplete}
+      >
+        Join meeting
+      </button>
+    </div>
+  );
+}
+
+function CallUI() {
+  const { useCallCallingState } = useCallStateHooks();
+
+  const callingState = useCallCallingState();
+
+  if (callingState !== CallingState.JOINED) {
+    return <Loader2 className="mx-auto animate-spin" />;
+  }
+
+  return <FlexibleCallLayout />;
+}
+
 function UpcomingMeetingScreen() {
   const call = useStreamCall();
 
@@ -110,9 +179,12 @@ function UpcomingMeetingScreen() {
           <span className="font-bold">{call.state.custom.description}</span>
         </p>
       )}
-      <Link href="/" className={buttonClassName}>
+      <a
+        href="/"
+        className="flex items-center justify-center gap-2 rounded-full bg-blue-500 px-3 py-2 font-semibold text-white transition-colors hover:bg-blue-600 active:bg-blue-600 disabled:bg-gray-200"
+      >
         Go home
-      </Link>
+      </a>
     </div>
   );
 }
