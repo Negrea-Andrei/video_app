@@ -42,6 +42,14 @@ Clerk is used for authentication in this project. Learn more about Clerk from th
 
 Stream is used for video calls in this project. Learn more about Stream from their [official website](https://getstream.io/).
 
+## Demo
+
+Experience the video conferencing platform firsthand by visiting the demo website:
+
+[View Demo](https://video-app-one-xi.vercel.app)
+
+Explore the features and functionalities of the application to get a glimpse of its capabilities.
+
 ## Demo Authentication
 
 To access the demo features of this application, you can use the following demo accounts:
